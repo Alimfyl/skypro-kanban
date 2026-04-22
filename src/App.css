@@ -44,6 +44,8 @@ body {
 }
 
 .wrapper {
+  display: flex;
+  flex-direction: column;
   max-width: 100%;
   width: 100vw;
   min-height: 100vh;
@@ -794,6 +796,7 @@ body {
 
 .main {
   width: 100%;
+  flex-grow: 1;
   background-color: #EAEEF6;
 }
 .main__block {

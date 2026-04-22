@@ -2,7 +2,7 @@ import Card from "../Card/Card";
 
 function Column(props) {
     return (
-        <div className="main__column">
+        <div className="main__column column">
 							<div className="column__title">
 								<p>{props.title}</p>
 							</div>
