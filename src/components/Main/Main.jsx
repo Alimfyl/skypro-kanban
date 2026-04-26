@@ -1,16 +1,16 @@
 import Column from "../Column/Column";
-function Main () {
+function Main ( {cards} ) {
     return(
         <main className="main">
 			<div className="container">
 				
 				<div className="main__block">
 					<div className="main__content">
-                        <Column title="Без статуса" />
-                        <Column title="Нужно сделать" />
-                        <Column title="В работе" />
-                        <Column title="Тестирование" />
-                        <Column title="Готово" />
+                        <Column title="Без статуса" cardList={cards} />
+                        <Column title="Нужно сделать" cardList={cards} />
+                        <Column title="В работе" cardList={cards} />
+                        <Column title="Тестирование" cardList={cards} />
+                        <Column title="Готово" cardList={cards} />
 						
 					</div>
 				
