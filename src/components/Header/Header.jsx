@@ -1,7 +1,7 @@
 import { useState } from "react";
 function Header () {
 	const [isOpen, setIsOpen] = useState(false);
-	const toggleMenu = () => {
+	const toggleMenu = (e) => {
 		e.preventDefault();
 		setIsOpen(!isOpen);
 	};
