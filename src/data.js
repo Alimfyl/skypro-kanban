@@ -1,24 +1,24 @@
 export const cardList = [
     {
         id:1,
-        theme:"Web design",
+        topic:"Web design",
         title:"Название задачи",
         date: "30.10.23",
         status: "Без статуса"
     },
     {
         id:2,
-        theme:"Research",
+        topic:"Research",
         title:"Новая задача",
         date: "30.10.23",
-        status: "Без статуса"
+        status: "Нужно сделать"
     },
     {
         id:3,
-        theme:"Web design",
+        topic:"Copywriting",
         title:"Название задачи",
         date: "30.10.23",
-        status: "Без статуса"
+        status: "В работе"
     }
     
 ]
