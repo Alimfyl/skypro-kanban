@@ -7,13 +7,10 @@ function Column( {title, cardList} ) {
 								<p>{title}</p>
 							</div>
 							<div className="cards">
-								{cardList
-								.filter((card) => card.status === title)
-								.map((card) => (
+								{cardList.map((card) => (
 									<Card 
 									key={card.id}
 									theme={card.theme}
-									category={card.theme}
 									title={card.title}
 									date={card.date}
 									/>

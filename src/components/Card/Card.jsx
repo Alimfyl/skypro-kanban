@@ -1,10 +1,14 @@
-function Card({theme, category, title, date}) {
+function Card({theme, title, date}) {
+	let colorClass = "_gray";
+	if (theme === "Web design") colorClass = "_orange"
+	if (theme === "Research") colorClass = "_green"
+	if (theme === "Copywriting") colorClass = "_purple"
     return (
         <div className="cards__item">
 									<div className="cards__card card">
 										<div className="card__group">
-											<div className={`card__theme ${theme}`}>
-												<p className={theme}>{category}</p>
+											<div className={`card__theme ${colorClass}`}>
+												<p className={colorClass}>{theme}</p>
 											</div>
 											<a href="#popBrowse" target="_self">
 												<div className="card__btn">
@@ -30,7 +34,7 @@ function Card({theme, category, title, date}) {
 														</clipPath>
 													</defs>
 												</svg>
-												<p>30.10.23</p>
+												<p>{date}</p>
 											</div>
 										</div>
 									</div>
