@@ -1,4 +1,5 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import { cardList } from './data'
 import './App.css'
 import PopUser from './components/PopUser/PopUser'
 import PopNewCard from './components/PopNewCard/PopNewCard'
@@ -7,6 +8,13 @@ import Header from './components/Header/Header';
 import Main from'./components/Main/Main'
 
 function App() {
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    setTimeout(() =>{
+      setIsLoading(false);
+    }, 2000);
+  },[] );
 
   return (
     <>
@@ -22,12 +30,16 @@ function App() {
 		
 
 		<Header />
-		
-    <Main />
-		
+
+    {isLoading ? (
+      <p style={{ textAlign:"center", marginTop:"50px"}}>Данные загружаются...</p>
+    ) : (
+      <Main cards={cardList} />
+    )}
+    
     </div>
     </>
-  )
+  );
 }
 
 export default App

@@ -1,15 +1,22 @@
 import Card from "../Card/Card";
 
-function Column(props) {
+function Column( {title, cardList} ) {
     return (
         <div className="main__column column">
 							<div className="column__title">
-								<p>{props.title}</p>
+								<p>{title}</p>
 							</div>
 							<div className="cards">
-								<Card theme="_orange" category="Web Design" title="Название задачи" date="30.10.23" />
-								<Card theme="_purple" category="Copywriting" title="Название задачи" date="30.10.23" />
-								<Card theme="_green" category="Research" title="Название задачи" date="30.10.23" />
+								{cardList.map((card) => (
+									<Card 
+									key={card.id}
+									theme={card.theme}
+									title={card.title}
+									date={card.date}
+									/>
+								))
+								}
+								
 							</div>
 						</div>
     )
