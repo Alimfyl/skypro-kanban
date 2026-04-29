@@ -1,6 +1,6 @@
 import { useState } from "react";
 import * as S from "./Header.styled"
-import { Container } from "../../../App.styled";
+import { Container } from "../../../CommonStyles.styled";
 function Header ({ togleMenu }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleMenu = (e) => {
