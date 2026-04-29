@@ -698,11 +698,6 @@ body {
 
 
 
-.cards {
-  width: 100%;
-  display: block;
-  position: relative;
-}
 .cards__item {
   padding: 5px;
   animation-name: card-animation;
