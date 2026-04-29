@@ -1,3 +1,6 @@
+
+import * as S from "./Main.styled";
+import { Container } from "../../App.styled";
 import Column from "../Column/Column";
 const statusList = [
     "Без статуса",
@@ -8,11 +11,10 @@ const statusList = [
 ]
 function Main ( {cards = []} ) {
     return(
-        <main className="main">
-			<div className="container">
-				
-				<div className="main__block">
-					<div className="main__content">
+        <S.Main>
+			<Container>
+				<S.MainBlock>
+					<MainContent>
                         {statusList.map((status) => (
                             <Column 
                         key={status}
@@ -21,11 +23,11 @@ function Main ( {cards = []} ) {
                         />
                         ))}
 						
-					</div>
+					</MainContent>
 				
-				</div>
-			</div>
-		</main>
+				</S.MainBlock>
+			</Container>
+		</S.Main>
     )
 }
 export default Main
