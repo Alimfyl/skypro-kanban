@@ -7,7 +7,7 @@ function Column( {title, cardList} ) {
 							<S.ColumnTitle>
 								<p>{title}</p>
 							</S.ColumnTitle>
-							<Cards>
+							<S.Cards>
 								{cardList.map((card) => (
 									<Card 
 									key={card.id}
@@ -18,7 +18,7 @@ function Column( {title, cardList} ) {
 								))
 								}
 								
-							</Cards>
+							</S.Cards>
 						</S.MainColumn>
     )
 }

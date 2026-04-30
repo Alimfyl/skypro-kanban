@@ -1,6 +1,6 @@
 
 import * as S from "./Main.styled";
-import { Container } from "../../App.styled";
+import { Container } from "../../CommonStyles.styled";
 import Column from "../Column/Column";
 const statusList = [
     "Без статуса",
@@ -14,7 +14,7 @@ function Main ( {cards = []} ) {
         <S.Main>
 			<Container>
 				<S.MainBlock>
-					<MainContent>
+					<S.MainContent>
                         {statusList.map((status) => (
                             <Column 
                         key={status}
@@ -23,7 +23,7 @@ function Main ( {cards = []} ) {
                         />
                         ))}
 						
-					</MainContent>
+					</S.MainContent>
 				
 				</S.MainBlock>
 			</Container>
