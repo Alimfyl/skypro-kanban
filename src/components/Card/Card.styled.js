@@ -1,4 +1,14 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+const cardAnimation = keyframes`
+  0% {
+    height: 0;
+    opacity: 0;
+  }
+  100% {
+    height: auto;
+    opacity: 1;
+  }
+`;
 export const topicStyles = {
   orange: {
     backgroundColor: "#FFE4C2",
@@ -17,17 +27,10 @@ export const topicStyles = {
     color: "#FFFFFF",
   },
 };
-export const CardsItem = styled.div`
-  padding: 5px;
-  animation-name: ${cardAnimation}; /* Используем переменную */
-  animation-duration: 500ms;
-  animation-timing-function: linear;
-  animation-fill-mode: forwards; /* Чтобы карточка не исчезала после анимации */
-`;
 
 export const CardsItem   = styled.div `
   padding: 5px;
-  animation-name: card-animation;
+  animation-name: ${cardAnimation};
   animation-duration: 500ms;
   animation-timing-function: linear;
   animation-fill-mode: forwards;

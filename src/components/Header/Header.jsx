@@ -21,7 +21,7 @@ function Header ({ togleMenu }) {
 					</div>
 					<S.HeaderNav>
 						<S.HeaderBtnMainNew id="btnMainNew"><a href="#popNewCard">Создать новую задачу</a></S.HeaderBtnMainNew>
-						<S.HeaderUser onClick={toggleMenu}>Ivan Ivanov</S.HeaderUser>
+						<S.HeaderUser href="#" onClick={toggleMenu}>Ivan Ivanov</S.HeaderUser>
 						<div className="header__pop-user-set pop-user-set" id="user-set-target" style={{ display: isOpen ? "block" : "none"}}>
 							    <a href="">x</a> 
 							<p className="pop-user-set__name">Ivan Ivanov</p>

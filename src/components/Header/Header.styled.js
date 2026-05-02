@@ -89,7 +89,7 @@ export const HeaderUser = styled.a`
   &:hover {
     color: #33399b;
   }
-  &:hover:after {
+  &:hover::after {
     border-left-color: #33399b;
   border-bottom-color: #33399b;
   }
