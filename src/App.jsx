@@ -1,6 +1,8 @@
+import './App.css'
 import { useState } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { AppRoutes } from "./AppRoutes";
+
+import  AppRoutes  from "./AppRoutes";
 import { GlobalStyle } from "./GlobalStyle";
 
 function App() {

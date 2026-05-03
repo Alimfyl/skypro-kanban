@@ -8,7 +8,7 @@ import PopBrowse from "./components/PopBrowse/PopBrowse";
 import PopNewCard from "./components/PopNewCard/PopNewCard";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
-function AppRoutes({ user, setUser }) {
+ function AppRoutes({ user, setUser }) {
   return (
     <Routes>
         
