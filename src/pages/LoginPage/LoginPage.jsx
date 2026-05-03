@@ -1,45 +1,36 @@
 import { Link, useNavigate } from "react-router-dom";
-// Импортируй свои Styled Components для страницы логина здесь
-// import * as S from "./Login.styled"; 
+import * as S from "./Login.styled";
 
 function LoginPage({ setUser }) {
   const navigate = useNavigate();
 
   const handleLogin = (e) => {
-    e.preventDefault(); // Чтобы форма не перезагружала страницу
-    
-    // Имитируем вход: записываем данные в состояние
-    setUser({ name: "Ivan Ivanov", email: "ivan.ivanov@gmail.com" });
-    
-    // После входа перенаправляем на главную страницу
+    e.preventDefault();
+    setUser({ name: "Ivan Ivanov" });
     navigate("/");
   };
 
   return (
-    <div className="container-signin">
-      <div className="modal">
-        <div className="modal__block">
-          <div className="modal__ttl">
-            <h2>Вход</h2>
-          </div>
-          <form className="modal__form" action="#">
-            <input type="text" placeholder="Эл. почта" />
-            <input type="password" placeholder="Пароль" />
-            
-            {/* Кнопка входа */}
-            <button className="modal__btn-enter" onClick={handleLogin}>
-               Войти
-            </button>
-            
-            <div className="modal__form-group">
-              <p>Нужно зарегистрироваться?</p>
-              {/* Используем Link вместо <a> для мгновенного перехода */}
-              <Link to="/register">Регистрация здесь</Link>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
+    <S.Wrapper>
+      <S.ContainerSignin>
+        <S.Modal>
+          <S.ModalBlock>
+            <S.ModalTtl>
+              <h2>Вход</h2>
+            </S.ModalTtl>
+            <S.ModalFormLogin onSubmit={handleLogin}>
+              <S.ModalInput type="email" placeholder="Эл. почта" />
+              <S.ModalInput type="password" placeholder="Пароль" />
+              <S.ModalBtnEnter type="submit">Войти</S.ModalBtnEnter>
+              <S.ModalFormGroup>
+                <p>Нужно зарегистрироваться?</p>
+                <Link to="/register">Регистрация здесь</Link>
+              </S.ModalFormGroup>
+            </S.ModalFormLogin>
+          </S.ModalBlock>
+        </S.Modal>
+      </S.ContainerSignin>
+    </S.Wrapper>
   );
 }
 
