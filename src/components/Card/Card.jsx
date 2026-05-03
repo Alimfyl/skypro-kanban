@@ -15,11 +15,13 @@ function Card({ id, theme, title, date }) {
           <S.CardTheme $color={colorClass}>
             <p>{theme}</p>
           </S.CardTheme>
-          <S.CardBtn>
-            <div />
-            <div />
-            <div />
-          </S.CardBtn>
+          <Link to={`/card/${id}`}>
+            <S.CardBtn>
+              <div />
+              <div />
+              <div />
+            </S.CardBtn>
+          </Link>
         </S.CardGroup>
 
         <S.CardContent>
