@@ -1,47 +1,19 @@
-import { useState, useEffect } from 'react'
-import { cardList } from './data'
-import './App.css'
-import { GlobalStyle } from './GlobalStyle';
-import PopUser from './components/PopUser/PopUser'
-import PopNewCard from './components/PopNewCard/PopNewCard'
-import PopBrowse from './components/PopBrowse/PopBrowse'
-import Header from './components/Header/Header';
-import Main from'./components/Main/Main'
+import { useState } from "react";
+import { BrowserRouter } from "react-router-dom";
+import { AppRoutes } from "./AppRoutes";
+import { GlobalStyle } from "./GlobalStyle";
 
 function App() {
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    setTimeout(() =>{
-      setIsLoading(false);
-    }, 2000);
-  },[] );
+  
+  const [user, setUser] = useState(null); 
 
   return (
-    <>
+    <BrowserRouter>
       <GlobalStyle />
-    <div className="wrapper">
-		
-			<PopUser />
-
-			< PopNewCard />
-
-			<PopBrowse />
-		
-		
-
-		<Header />
-
-    {isLoading ? (
-      <p style={{ textAlign:"center", marginTop:"50px"}}>Данные загружаются...</p>
-    ) : (
-      <Main cards={cardList} />
-    )}
-    
-    </div>
-    </>
+      
+      <AppRoutes user={user} setUser={setUser} />
+    </BrowserRouter>
   );
 }
 
-export default App
-
+export default App;
