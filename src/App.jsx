@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { cardList } from './data'
 import './App.css'
+import { GlobalStyle } from './GlobalStyle';
 import PopUser from './components/PopUser/PopUser'
 import PopNewCard from './components/PopNewCard/PopNewCard'
 import PopBrowse from './components/PopBrowse/PopBrowse'
@@ -18,7 +19,7 @@ function App() {
 
   return (
     <>
-      
+      <GlobalStyle />
     <div className="wrapper">
 		
 			<PopUser />

@@ -1,5 +1,7 @@
 import { useState } from "react";
-function Header () {
+import * as S from "./Header.styled"
+import { Container } from "../../CommonStyles.styled";
+function Header ({ togleMenu }) {
 	const [isOpen, setIsOpen] = useState(false);
 	const toggleMenu = (e) => {
 		e.preventDefault();
@@ -8,18 +10,18 @@ function Header () {
 
 
     return(
-        <header className="header">
-			<div className="container">
-				<div className="header__block">
-					<div className="header__logo _show _light">
+        <S.StyledHeader>
+			<Container>
+				<S.HeaderBlock>
+					<S.HeaderLogo>
 						<a href="" target="_self"><img src="/images/logo.png" alt="logo"/></a>
-					</div>
+					</S.HeaderLogo>
 					<div className="header__logo _dark">
 						<a href="" target="_self"><img src="/images/logo_dark.png" alt="logo"/></a>
 					</div>
-					<nav className="header__nav">
-						<button className="header__btn-main-new _hover01" id="btnMainNew"><a href="#popNewCard">Создать новую задачу</a></button>
-						<a href="#user-set-target" className="header__user _hover02" onClick={toggleMenu}>Ivan Ivanov</a>
+					<S.HeaderNav>
+						<S.HeaderBtnMainNew id="btnMainNew"><a href="#popNewCard">Создать новую задачу</a></S.HeaderBtnMainNew>
+						<S.HeaderUser href="#" onClick={toggleMenu}>Ivan Ivanov</S.HeaderUser>
 						<div className="header__pop-user-set pop-user-set" id="user-set-target" style={{ display: isOpen ? "block" : "none"}}>
 							    <a href="">x</a> 
 							<p className="pop-user-set__name">Ivan Ivanov</p>
@@ -30,10 +32,10 @@ function Header () {
 							</div>
 							<button type="button" className="_hover03"><a href="#popExit">Выйти</a></button>
 						</div>
-					</nav>					
-				</div>
-			</div>			
-		</header>
+					</S.HeaderNav>					
+				</S.HeaderBlock>
+			</Container>			
+		</S.StyledHeader>
     );
 }
 export default Header
