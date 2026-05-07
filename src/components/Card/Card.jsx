@@ -1,8 +1,8 @@
-
+import { Link } from "react-router-dom";
 import * as S from "./Card.styled";
 
-function Card({ theme, title, date }) {
-  // 1. Превращаем человеческое название из data.js в ключ для твоего объекта цветов
+function Card({ id, theme, title, date }) {
+  
   const colorClass = theme === "Web design" ? "orange" : 
                      theme === "Research" ? "green" : 
                      theme === "Copywriting" ? "purple" : "gray";
@@ -11,21 +11,23 @@ function Card({ theme, title, date }) {
     <S.CardsItem>
       <S.CardsCard>
         <S.CardGroup>
-          {/* 2. Передаем ключ цвета в пропс $color */}
+          
           <S.CardTheme $color={colorClass}>
             <p>{theme}</p>
           </S.CardTheme>
-          <S.CardBtn>
-            <div />
-            <div />
-            <div />
-          </S.CardBtn>
+          <Link to={`/card/${id}`}>
+            <S.CardBtn>
+              <div />
+              <div />
+              <div />
+            </S.CardBtn>
+          </Link>
         </S.CardGroup>
 
         <S.CardContent>
-          <a href="#popBrowse">
+          <Link to={`/card/${id}`}>
             <S.CardTitle>{title}</S.CardTitle>
-          </a>
+          </Link>
           <S.CardDate>
             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none">
 				<g clipPath="url(#clip0_1_415)">
