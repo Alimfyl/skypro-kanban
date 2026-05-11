@@ -2,48 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { login } from "../api/auth";
 
-export const SignIn = () => {
-  const navigate = useNavigate();
-
-  
-  const [formData, setFormData] = useState({
-    login: "",
-    password: "",
-  });
-
-  
-  const [error, setError] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-
-  
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  
-  const handleLogin = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    setError(null);
-
-    try {
-      const userData = await login(formData);
-      
-      
-      localStorage.setItem("token", userData.token);
-      localStorage.setItem("user", JSON.stringify(userData));
-
-      
-      navigate("/");
-    } catch (err) {
-      
-      setError(err.message);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
+export const SignIn = ({ setUser }) => {
+ 
   return (
     <div className="wrapper">
       <div className="container-signin">

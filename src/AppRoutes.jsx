@@ -23,7 +23,7 @@ import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
 
       <Route path="/login" element={<LoginPage setUser={setUser} />} />
-      <Route path="/register" element={<RegisterPage />} />
+      <Route path="/register" element={<RegisterPage setUser={setUser} />} />
       
       
       <Route path="*" element={<NotFoundPage />} />

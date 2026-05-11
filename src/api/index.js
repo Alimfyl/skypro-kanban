@@ -2,12 +2,12 @@
 import axios from 'axios';
 
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://sky.pro';
+const ApiBaseUrl = import.meta.env.VITE_API_URL || 'https://wedev-api.sky.pro/api';
 
 const api = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: ApiBaseUrl,
   headers: {
-    'Content-Type': 'application/json',
+    //'Content-Type': 'application/json',
   },
 });
 
