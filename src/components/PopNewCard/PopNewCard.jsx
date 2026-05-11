@@ -1,18 +1,17 @@
 import { useState } from "react";
 import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import { createTask } from "../../api/tasks"; // импорт твоей функции
+import { createTask } from "../../api/tasks";
 import Calendar from "../Calendar/Calendar";
 
 function PopNewCard() {
   const navigate = useNavigate();
-  // Предполагаем, что MainPage передает функцию обновления через Outlet context
-  // Либо можно просто сделать редирект на главную, где сработает useEffect
+  
   
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     title: "",
-    topic: "Web Design", // значение по умолчанию
+    topic: "Web Design", 
     description: "",
   });
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -20,7 +19,7 @@ function PopNewCard() {
   const handleCreateTask = async (e) => {
     e.preventDefault();
     
-    // Простая валидация (критерий: "Форма валидирует все поля")
+    
     if (!formData.title.trim() || !formData.description.trim()) {
       setError("Заполните все поля");
       return;
@@ -30,17 +29,17 @@ function PopNewCard() {
     setError(null);
 
     try {
-      // Собираем данные для API
+      
       const taskData = {
         ...formData,
         date: selectedDate,
       };
 
       await createTask(taskData); 
-      // После успеха возвращаемся на главную
+      
       navigate("/"); 
-      // Чтобы список обновился, можно сделать window.location.reload() 
-      // или использовать глобальный стейт/контекст для задач
+      
+
     } catch (err) {
       setError(err.message);
     } finally {
@@ -60,6 +59,7 @@ function PopNewCard() {
                 <div className="form-new__block">
                   <label htmlFor="formTitle" className="subttl">Название задачи</label>
                   <input
+                    id="formTitle"
                     className="form-new__input"
                     type="text"
                     name="title"
@@ -67,18 +67,33 @@ function PopNewCard() {
                     value={formData.title}
                     onChange={(e) => setFormData({ ...formData, title: e.target.value })}
                     autoFocus
+                    required
                   />
                 </div>
                 <div className="form-new__block">
-                  <label htmlFor="textArea" className="subttl">Описание задачи</label>
+                  <label htmlFor="textArea"className="subttl">Описание задачи</label>
                   <textarea
+                    id="textArea"
                     className="form-new__area"
                     name="description"
                     placeholder="Введите описание задачи..."
                     value={formData.description}
                     onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+                    rows={4}
+                    required
                   ></textarea>
                 </div>
+
+            <button 
+              type="submit"
+              className="form-new__create _hover01" 
+              disabled={isLoading}
+            >
+              {isLoading ? "Создание..." : "Создать задачу"}
+            </button>
+
+            {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
+
               </form>
               <Calendar selected={selectedDate} setSelected={setSelectedDate} />
             </div>
@@ -98,15 +113,7 @@ function PopNewCard() {
               </div>
             </div>
 
-            {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
-
-            <button 
-              onClick={handleCreateTask}
-              className="form-new__create _hover01" 
-              disabled={isLoading}
-            >
-              {isLoading ? "Создание..." : "Создать задачу"}
-            </button>
+           
           </div>
         </div>
       </div>

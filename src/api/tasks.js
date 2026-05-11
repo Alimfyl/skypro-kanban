@@ -31,18 +31,18 @@ export const createTask = async (taskData) => {
     }
 };
 
-export const updateTask = async (id, taskData) => {
+export const updateTask = async (_id, taskData) => {
     try {
-        const {data} = await api.put(`/kanban/${id}`, taskData);
+        const {data} = await api.put(`/kanban/${_id}`, taskData);
         return data.tasks;
     }catch (err) {
         throw new Error(err.response?.data?.error || 'Ошибка при обновлении');
     }
 };
 
-export const deleteTask = async (id) => {
+export const deleteTask = async (_id) => {
     try  {
-        const {data} = await api.delete(`/kanban/${id}`);
+        const {data} = await api.delete(`/kanban/${_id}`);
         return data.tasks;
     } catch (err) {
         throw new Error(err.response?.data?.error || 'Не удалось удалить');

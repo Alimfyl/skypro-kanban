@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import * as S from "./Card.styled";
 
-function Card({ id, theme, title, date }) {
+function Card({ _id, theme, title, date }) {
   
   const colorClass = theme === "Web design" ? "orange" : 
                      theme === "Research" ? "green" : 
@@ -15,7 +15,7 @@ function Card({ id, theme, title, date }) {
           <S.CardTheme $color={colorClass}>
             <p>{theme}</p>
           </S.CardTheme>
-          <Link to={`/card/${id}`}>
+          <Link to={`/card/${_id}`}>
             <S.CardBtn>
               <div />
               <div />
@@ -25,7 +25,7 @@ function Card({ id, theme, title, date }) {
         </S.CardGroup>
 
         <S.CardContent>
-          <Link to={`/card/${id}`}>
+          <Link to={`/card/${_id}`}>
             <S.CardTitle>{title}</S.CardTitle>
           </Link>
           <S.CardDate>
