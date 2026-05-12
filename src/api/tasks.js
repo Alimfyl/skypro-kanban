@@ -1,15 +1,4 @@
-//const baseHost = "https://wedev-api.sky.pro/api/kanban";
-//export async function getTasks( {token} ) {
-//    const response = await fetch(baseHost, {
-//        headers: {
-//            Authorization: `Bearer ${token}`,
-//        },
-//    });
-//
-//    if (!response.ok) {
-//        throw new Error("Ошибка при получении задач")
-//    }
-//}
+
 import api from './index';
 
 
@@ -24,7 +13,13 @@ export const fetchTasks = async () => {
 
 export const createTask = async (taskData) => {
     try {
-        const {data} = await api.post('/kanban', taskData);
+        const {data} = await api.post('/kanban', {
+            title: taskData.title,
+            topic: taskData.topic,
+            status: taskData.status || "Без статуса",
+            text: taskData.description, 
+            date: taskData.date,
+        });
         return data.tasks;
     } catch (err) {
         throw new Error(err.response?.data?.error || 'Ошибка при создании задачи');
@@ -33,7 +28,13 @@ export const createTask = async (taskData) => {
 
 export const updateTask = async (_id, taskData) => {
     try {
-        const {data} = await api.put(`/kanban/${_id}`, taskData);
+        const {data} = await api.put(`/kanban/${_id}`, {
+            title: taskData.title,
+            topic: taskData.topic,
+            status: taskData.status,
+            text: taskData.description || taskData.text, 
+            date: taskData.date,
+        });
         return data.tasks;
     }catch (err) {
         throw new Error(err.response?.data?.error || 'Ошибка при обновлении');

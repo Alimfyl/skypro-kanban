@@ -6,9 +6,7 @@ const ApiBaseUrl = import.meta.env.VITE_API_URL || 'https://wedev-api.sky.pro/ap
 
 const api = axios.create({
   baseURL: ApiBaseUrl,
-  headers: {
-    //'Content-Type': 'application/json',
-  },
+
 });
 
 
@@ -16,6 +14,9 @@ api.interceptors.request.use((config) => {
   const token = localStorage.getItem('token');
   if (token) {
     config.headers.Authorization = `Bearer ${token}`;
+  }
+  if (config.data) {
+    delete config.headers['Content-Type'];
   }
   return config;
 });
