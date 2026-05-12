@@ -1,11 +1,21 @@
 import { Link } from "react-router-dom";
 import * as S from "./Card.styled";
 
-function Card({ _id, theme, title, date }) {
+function Card({ _id, topic, title, date }) {
   
-  const colorClass = theme === "Web design" ? "orange" : 
-                     theme === "Research" ? "green" : 
-                     theme === "Copywriting" ? "purple" : "gray";
+  const colorClass = topic === "Web Design" ? "_orange" : 
+                     topic === "Research" ? "_green" : 
+                     topic === "Copywriting" ? "_purple" : "_gray";
+
+   const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const dateObj = new Date(dateString);
+    return dateObj.toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    });
+   };
 
   return (
     <S.CardsItem>
@@ -13,7 +23,7 @@ function Card({ _id, theme, title, date }) {
         <S.CardGroup>
           
           <S.CardTheme $color={colorClass}>
-            <p>{theme}</p>
+            <p className={colorClass}>{topic}</p>
           </S.CardTheme>
           <Link to={`/card/${_id}`}>
             <S.CardBtn>
@@ -40,7 +50,7 @@ function Card({ _id, theme, title, date }) {
 					</clipPath>
 				</defs>
 			</svg>
-            <p>{date}</p>
+            <p>{formatDate(date)}</p>
           </S.CardDate>
         </S.CardContent>
       </S.CardsCard>

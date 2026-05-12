@@ -10,19 +10,19 @@ const cardAnimation = keyframes`
   }
 `;
 export const topicStyles = {
-  orange: {
+  _orange: {
     backgroundColor: "#FFE4C2",
     color: "#FF6D00",
   },
-  green: {
+  _green: {
     backgroundColor: "#B4FDD1",
     color: "#06B16E",
   },
-  purple: {
+  _purple: {
     backgroundColor: "#E9D4FF",
     color: "#9A48F1",
   },
-  gray: {
+  _gray: {
     backgroundColor: "#94A6BE",
     color: "#FFFFFF",
   },

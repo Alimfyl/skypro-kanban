@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Outlet } from "react-router-dom";
+import { data, Outlet } from "react-router-dom";
 import { fetchTasks } from "../../api/tasks";
 import Header from "../../components/Header/Header";
 import Main from "../../components/Main/Main";
@@ -9,22 +9,26 @@ function MainPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const refreshTasks = () => {
+    fetchTasks ()
+    .then((data) => {
+      setCards(data);
+    })
+    .catch((err) => {
+      setError(err.message);
+    })
+    .finally(() => {
+      setIsLoading(false);
+    });
+  }
+
   useEffect (() =>{
-  fetchTasks()
-  .then((data) => {
-    setCards(data);
-  })
-  .catch((err) => {
-    setError(err.message);
-  })
-  .finally(() => {
-    setIsLoading(false);
-  });
+  refreshTasks();
 }, [] );
   return (
     <div className="wrapper">
         
-      <Outlet /> 
+      <Outlet context={{ cards, refreshTasks }} /> 
 
       <Header />
 

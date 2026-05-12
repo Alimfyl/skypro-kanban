@@ -16,6 +16,8 @@ function PopNewCard() {
   });
   const [selectedDate, setSelectedDate] = useState(new Date());
 
+  const { refreshTasks } = useOutletContext();
+
   const handleCreateTask = async (e) => {
     e.preventDefault();
     
@@ -31,14 +33,17 @@ function PopNewCard() {
     try {
       
       const taskData = {
-        ...formData,
+        title: formData.title,
+        topic: formData.topic,
+        text: formData.description,
         date: selectedDate,
       };
 
       await createTask(taskData); 
+
+      if(refreshTasks) refreshTasks();
       
       navigate("/"); 
-      
 
     } catch (err) {
       setError(err.message);
