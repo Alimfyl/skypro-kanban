@@ -1,15 +1,15 @@
-import api from './index'; // Импортируем твой настроенный axios
+import api from './index'; 
 
-// Вспомогательная функция для получения общих настроек
+
 const getRequestConfig = (method, bodyData = null) => {
   const token = localStorage.getItem("token");
   
   const config = {
     method: method,
     headers: {
-      // Подтягиваем токен, как это было в интерцепторе
+        
       Authorization: `Bearer ${token}`, 
-      // Content-Type НЕ пишем, чтобы сервер не ругался
+      
     }
   };
 
@@ -20,10 +20,10 @@ const getRequestConfig = (method, bodyData = null) => {
   return config;
 };
 
-// 1. Получить все задачи
+
 export const fetchTasks = async () => {
   try {
-    // Берем baseURL прямо из твоего axios-клиента
+    
     const response = await fetch(`${api.defaults.baseURL}/kanban`, getRequestConfig("GET"));
 
     if (!response.ok) {
