@@ -12,7 +12,7 @@ function PopNewCard() {
   const [formData, setFormData] = useState({
     title: "",
     topic: "Web Design", 
-    description: "",
+    text: "",
   });
   const [selectedDate, setSelectedDate] = useState(new Date());
 
@@ -60,7 +60,7 @@ function PopNewCard() {
             <h3 className="pop-new-card__ttl">Создание задачи</h3>
             <Link to="/" className="pop-new-card__close">✖</Link>
             <div className="pop-new-card__wrap">
-              <form className="pop-new-card__form form-new" id="formNewCard">
+              <form className="pop-new-card__form form-new" id="formNewCard" onSubmit={handleCreateTask}>
                 <div className="form-new__block">
                   <label htmlFor="formTitle" className="subttl">Название задачи</label>
                   <input

@@ -21,7 +21,7 @@ function PopBrowse() {
     title: "",
     topic: "",
     status: "",
-    description: "",
+    text: "",
   });
 
   // Заполняем поля, когда карточка найдена
