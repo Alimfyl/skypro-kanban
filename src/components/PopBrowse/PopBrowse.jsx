@@ -6,39 +6,48 @@ import Calendar from "../Calendar/Calendar";
 function PopBrowse() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { cards, refreshTasks } = useOutletContext(); // Получаем данные из MainPage
+  const { cards, refreshTasks } = useOutletContext();
 
-  // Находим нужную карточку в общем списке
   const currentCard = cards.find((card) => card._id === id);
 
-  // Состояния
-  const [isEditing, setIsEditing] = useState(false); // Режим редактирования
+  const [isEditing, setIsEditing] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   
-  // Состояние для редактируемых данных
+  // 1. Инициализируем стейт правильными ключами
   const [editData, setEditData] = useState({
     title: "",
     topic: "",
     status: "",
-    text: "",
+    description: "",
+    date: new Date(),
   });
 
-  // Заполняем поля, когда карточка найдена
   useEffect(() => {
     if (currentCard) {
       setEditData({
         title: currentCard.title,
         topic: currentCard.topic,
         status: currentCard.status,
-        description: currentCard.description,
+        description: currentCard.description || currentCard.text || "",
+        date: currentCard.date ? new Date(currentCard.date) : new Date(),
       });
     }
   }, [currentCard]);
 
   if (!currentCard) return null;
 
-  // Удаление задачи
+  // 2. Функция форматирования даты для отображения под календарем
+  const formatBrowseDate = (dateVal) => {
+    if (!dateVal) return "";
+    const dateObj = new Date(dateVal);
+    return dateObj.toLocaleDateString("ru-RU", {
+      day: "2-digit",
+      month: "2-digit",
+      year: "2-digit",
+    });
+  };
+
   const handleDelete = async (e) => {
     e.preventDefault();
     if (!window.confirm("Вы уверены, что хотите удалить задачу?")) return;
@@ -55,7 +64,6 @@ function PopBrowse() {
     }
   };
 
-  // Сохранение изменений
   const handleSave = async (e) => {
     e.preventDefault();
     setIsLoading(true);
@@ -76,25 +84,31 @@ function PopBrowse() {
         <div className="pop-browse__block">
           <div className="pop-browse__content">
             <div className="pop-browse__top-block">
-              <h3 className="pop-browse__ttl">{currentCard.title}</h3>
-              <div className={`categories__theme theme-top _active-category ${currentCard.topic === 'Web Design' ? '_orange' : currentCard.topic === 'Research' ? '_green' : '_purple'}`}>
-                <p>{currentCard.topic}</p>
+              {/* Показываем измененный или текущий заголовок */}
+              <h3 className="pop-browse__ttl">{editData.title}</h3>
+              <div className={`categories__theme theme-top _active-category ${editData.topic === 'Web Design' ? '_orange' : editData.topic === 'Research' ? '_green' : '_purple'}`}>
+                <p>{editData.topic}</p>
               </div>
             </div>
 
             <div className="pop-browse__status status">
               <p className="status__p subttl">Статус</p>
               <div className="status__themes">
-                {["Нужно сделать", "В работе", "Тестирование", "Готово"].map((st) => (
-                  <div 
-                    key={st}
-                    onClick={() => isEditing && setEditData({ ...editData, status: st })}
-                    className={`status__theme ${editData.status === st ? "_gray" : "_hide"} ${isEditing ? "_active-status" : ""}`}
-                    style={{ cursor: isEditing ? "pointer" : "default" }}
-                  >
-                    <p>{st}</p>
-                  </div>
-                ))}
+                {["Без статуса", "Нужно сделать", "В работе", "Тестирование", "Готово"].map((st) => {
+                  // Исправлено: определяем переменную isActive локально для каждого элемента массива
+                  const isActive = editData.status === st;
+                  return (
+                    <div 
+                      key={st}
+                      onClick={() => isEditing && setEditData({ ...editData, status: st })}
+                      // Исправлено: в режиме редактирования показываем все статусы для выбора, активный выделяем классом _gray
+                      className={`status__theme ${isActive ? "_gray" : isEditing ? "" : "_hide"}`}
+                      style={{ cursor: isEditing ? "pointer" : "default" }}
+                    >
+                      <p>{st}</p>
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -107,16 +121,26 @@ function PopBrowse() {
                     readOnly={!isEditing}
                     placeholder="Введите описание задачи..."
                     value={editData.description}
+                    // Исправлено: функция обновления стейта использует setEditData вместо несуществующей setFormData
                     onChange={(e) => setEditData({ ...editData, description: e.target.value })}
                   ></textarea>
                 </div>
               </form>
-              <Calendar periodText="Срок исполнения:" date={currentCard.date} />
+              
+              {/* Исправлено: Календарь теперь полностью контролируемый и обновляет дату в editData */}
+              <Calendar
+                selected={editData.date}
+                setSelected={(newDate) => isEditing && setEditData({ ...editData, date: newDate })} 
+              />
+            </div>
+
+            {/* Добавлено: Вывод текущей даты в правильном формате (как в макете) */}
+            <div className="pop-browse__date-output" style={{ padding: "10px 0", color: "#94A6BE", fontSize: "14px" }}>
+              <p>Срок исполнения: <span style={{ color: "#000", fontWeight: "500" }}>{formatBrowseDate(editData.date)}</span></p>
             </div>
 
             {error && <p style={{ color: "red", textAlign: "center", marginBottom: "10px" }}>{error}</p>}
 
-            {/* Группа кнопок: переключается в зависимости от isEditing */}
             {!isEditing ? (
               <div className="pop-browse__btn-browse">
                 <div className="btn-group">
