@@ -94,22 +94,41 @@ function PopBrowse() {
             <div className="pop-browse__status status">
               <p className="status__p subttl">Статус</p>
               <div className="status__themes">
-                {["Без статуса", "Нужно сделать", "В работе", "Тестирование", "Готово"].map((st) => {
-                  // Исправлено: определяем переменную isActive локально для каждого элемента массива
-                  const isActive = editData.status === st;
-                  return (
-                    <div 
-                      key={st}
-                      onClick={() => isEditing && setEditData({ ...editData, status: st })}
-                      // Исправлено: в режиме редактирования показываем все статусы для выбора, активный выделяем классом _gray
-                      className={`status__theme ${isActive ? "_gray" : isEditing ? "" : "_hide"}`}
-                      style={{ cursor: isEditing ? "pointer" : "default" }}
-                    >
-                      <p>{st}</p>
-                    </div>
-                  );
-                })}
-              </div>
+    {["Без статуса", "Нужно сделать", "В работе", "Тестирование", "Готово"].map((st) => {
+      const isActive = editData.status === st;
+      
+      return (
+        <div 
+          key={st}
+          onClick={() => isEditing && setEditData({ ...editData, status: st })}
+          className={`status__theme ${st === "Нужно сделать" ? "_gray" : ""}`}
+          style={{
+            cursor: isEditing ? "pointer" : "default",
+            // В режиме просмотра показываем только активный статус
+            display: !isEditing && !isActive ? "none" : "block",
+            // Фон: в режиме редактирования активный - синий, неактивные - прозрачные
+            backgroundColor: isEditing 
+              ? (isActive ? "#565EEF" : "transparent")
+              : (isActive ? "#94A6BE" : ""),
+            // Цвет текста
+            color: isEditing 
+              ? (isActive ? "#FFFFFF" : "#94A6BE")
+              : (isActive ? "#FFFFFF" : ""),
+            // Рамка для неактивных статусов в режиме редактирования
+            border: isEditing && !isActive 
+              ? "0.7px solid rgba(148, 166, 190, 0.4)" 
+              : isEditing && isActive 
+                ? "1px solid #565EEF" 
+                : "none",
+            // Прозрачность для неактивных
+            opacity: isEditing && !isActive ? 0.6 : 1,
+          }}
+        >
+          <p>{st}</p>
+        </div>
+      );
+    })}
+  </div>
             </div>
 
             <div className="pop-browse__wrap">
