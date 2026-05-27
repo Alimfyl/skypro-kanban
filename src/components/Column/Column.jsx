@@ -2,17 +2,21 @@ import * as S from "./Column.styled";
 import Card from "../Card/Card";
 
 function Column( {title, cardList} ) {
+
+	
     return (
         <S.MainColumn>
 							<S.ColumnTitle>
 								<p>{title}</p>
 							</S.ColumnTitle>
 							<S.Cards>
+								
+
 								{cardList.map((card) => (
 									<Card 
-									key={card.id}
-									id={card.id}
-									theme={card.theme}
+									key={card._id}
+									_id={card._id}
+									topic={card.topic}
 									title={card.title}
 									date={card.date}
 									/>
