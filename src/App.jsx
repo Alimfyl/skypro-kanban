@@ -1,18 +1,13 @@
-import './App.css'
-import { useState } from "react";
-import { BrowserRouter } from "react-router-dom";
-
-import  AppRoutes  from "./AppRoutes";
-import { GlobalStyle } from "./GlobalStyle";
-
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import { TaskProvider } from "./contexts/TaskContext";
 import { useAuth } from "./contexts/AuthContext";
-import MainPage from "./pages/MainPage";
-import LoginPage from "./pages/LoginPage";
-import RegisterPage from "./pages/RegisterPage";
+import { GlobalStyle } from "./GlobalStyle";
+import MainPage from "./pages/MainPage/MainPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
+import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import PopBrowse from "./components/PopBrowse/PopBrowse";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 
 // Компонент для защиты приватных маршрутов
 const ProtectedRoute = ({ children }) => {
@@ -44,6 +39,9 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
+      
+      {/* 404 страница */}
+      <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
 }
@@ -53,24 +51,10 @@ function App() {
     <BrowserRouter>
       <AuthProvider>      
         <TaskProvider>      
+          <GlobalStyle />
           <AppRoutes />     
         </TaskProvider>
       </AuthProvider>
-    </BrowserRouter>
-  );
-}
-
-export default App;
-
-function App() {
-  
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user"))); 
-
-  return (
-    <BrowserRouter>
-      <GlobalStyle />
-      
-      <AppRoutes user={user} setUser={setUser} />
     </BrowserRouter>
   );
 }

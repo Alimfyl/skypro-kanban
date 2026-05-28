@@ -2,6 +2,7 @@
 import * as S from "./Main.styled";
 import { Container } from "../../CommonStyles.styled";
 import Column from "../Column/Column";
+import { useTasks } from ".../.../contexts/TaskContext";
 const statusList = [
     "Без статуса",
     "Нужно сделать",
@@ -9,7 +10,8 @@ const statusList = [
     "Тестирование",
     "Готово",
 ]
-function Main ( {cards = []} ) {
+function Main () {
+    const {task} = useTasks();
     return(
         <S.Main>
 			<Container>
@@ -19,7 +21,7 @@ function Main ( {cards = []} ) {
                             <Column 
                         key={status}
                         title={status}
-                        cardList={cards.filter((card) => card.status === status)}
+                        cardList={task.filter((card) => card.status === status)}
                         />
                         ))}
 						
