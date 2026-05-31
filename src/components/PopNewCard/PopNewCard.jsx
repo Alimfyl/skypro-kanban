@@ -1,26 +1,27 @@
 import { useState } from "react";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
-import { createTask } from "../../api/tasks";
+import { Link, useNavigate } from "react-router-dom";
+
+import { useTasks } from "../../contexts/TaskContext";
 import Calendar from "../Calendar/Calendar";
 
 function PopNewCard() {
   const navigate = useNavigate();
   
+  const { addTask } = useTasks();
   
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  
+  
   const [formData, setFormData] = useState({
     title: "",
     topic: "Web Design", 
-    text: "",
+    description: "",
   });
   const [selectedDate, setSelectedDate] = useState(new Date());
 
-  const { refreshTasks } = useOutletContext();
-
   const handleCreateTask = async (e) => {
     e.preventDefault();
-    
     
     if (!formData.title.trim() || !formData.description.trim()) {
       setError("Заполните все поля");
@@ -35,16 +36,14 @@ function PopNewCard() {
       const taskData = {
         title: formData.title,
         topic: formData.topic,
-        text: formData.description,
+        description: formData.description, 
         date: selectedDate,
       };
 
-      await createTask(taskData); 
-
-      if(refreshTasks) refreshTasks();
+      
+      await addTask(taskData); 
       
       navigate("/"); 
-
     } catch (err) {
       setError(err.message);
     } finally {
@@ -76,7 +75,7 @@ function PopNewCard() {
                   />
                 </div>
                 <div className="form-new__block">
-                  <label htmlFor="textArea"className="subttl">Описание задачи</label>
+                  <label htmlFor="textArea" className="subttl">Описание задачи</label>
                   <textarea
                     id="textArea"
                     className="form-new__area"
@@ -89,16 +88,15 @@ function PopNewCard() {
                   ></textarea>
                 </div>
 
-            <button 
-              type="submit"
-              className="form-new__create _hover01" 
-              disabled={isLoading}
-            >
-              {isLoading ? "Создание..." : "Создать задачу"}
-            </button>
+                <button 
+                  type="submit"
+                  className="form-new__create _hover01" 
+                  disabled={isLoading}
+                >
+                  {isLoading ? "Создание..." : "Создать задачу"}
+                </button>
 
-            {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
-
+                {error && <p style={{ color: "red", marginBottom: "10px" }}>{error}</p>}
               </form>
               <Calendar selected={selectedDate} setSelected={setSelectedDate} />
             </div>
@@ -117,8 +115,6 @@ function PopNewCard() {
                 ))}
               </div>
             </div>
-
-           
           </div>
         </div>
       </div>

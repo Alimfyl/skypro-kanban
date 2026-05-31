@@ -1,20 +1,23 @@
-import { useParams, useNavigate, useOutletContext } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { deleteTask, updateTask } from "../../api/tasks";
+
+import { useTasks } from "../../contexts/TaskContext";
 import Calendar from "../Calendar/Calendar";
 
 function PopBrowse() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { cards, refreshTasks } = useOutletContext();
+  
+  
+  const { tasks, editTask, removeTask } = useTasks();
 
-  const currentCard = cards.find((card) => card._id === id);
+  
+  const currentCard = tasks.find((card) => card._id === id || card.id === id);
 
   const [isEditing, setIsEditing] = useState(false); 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  const [localError, setLocalError] = useState(null);
   
-  // 1. Инициализируем стейт правильными ключами
   const [editData, setEditData] = useState({
     title: "",
     topic: "",
@@ -37,7 +40,6 @@ function PopBrowse() {
 
   if (!currentCard) return null;
 
-  // 2. Функция форматирования даты для отображения под календарем
   const formatBrowseDate = (dateVal) => {
     if (!dateVal) return "";
     const dateObj = new Date(dateVal);
@@ -53,12 +55,13 @@ function PopBrowse() {
     if (!window.confirm("Вы уверены, что хотите удалить задачу?")) return;
 
     setIsLoading(true);
+    setLocalError(null);
     try {
-      await deleteTask(id);
-      refreshTasks();
+      
+      await removeTask(id);
       navigate("/");
     } catch (err) {
-      setError(err.message);
+      setLocalError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -67,12 +70,13 @@ function PopBrowse() {
   const handleSave = async (e) => {
     e.preventDefault();
     setIsLoading(true);
+    setLocalError(null);
     try {
-      await updateTask(id, editData);
-      refreshTasks();
+      
+      await editTask(id, editData);
       setIsEditing(false);
     } catch (err) {
-      setError(err.message);
+      setLocalError(err.message);
     } finally {
       setIsLoading(false);
     }
@@ -84,7 +88,6 @@ function PopBrowse() {
         <div className="pop-browse__block">
           <div className="pop-browse__content">
             <div className="pop-browse__top-block">
-              {/* Показываем измененный или текущий заголовок */}
               <h3 className="pop-browse__ttl">{editData.title}</h3>
               <div className={`categories__theme theme-top _active-category ${editData.topic === 'Web Design' ? '_orange' : editData.topic === 'Research' ? '_green' : '_purple'}`}>
                 <p>{editData.topic}</p>
@@ -94,41 +97,36 @@ function PopBrowse() {
             <div className="pop-browse__status status">
               <p className="status__p subttl">Статус</p>
               <div className="status__themes">
-    {["Без статуса", "Нужно сделать", "В работе", "Тестирование", "Готово"].map((st) => {
-      const isActive = editData.status === st;
-      
-      return (
-        <div 
-          key={st}
-          onClick={() => isEditing && setEditData({ ...editData, status: st })}
-          className={`status__theme ${st === "Нужно сделать" ? "_gray" : ""}`}
-          style={{
-            cursor: isEditing ? "pointer" : "default",
-            // В режиме просмотра показываем только активный статус
-            display: !isEditing && !isActive ? "none" : "block",
-            // Фон: в режиме редактирования активный - синий, неактивные - прозрачные
-            backgroundColor: isEditing 
-              ? (isActive ? "#565EEF" : "transparent")
-              : (isActive ? "#94A6BE" : ""),
-            // Цвет текста
-            color: isEditing 
-              ? (isActive ? "#FFFFFF" : "#94A6BE")
-              : (isActive ? "#FFFFFF" : ""),
-            // Рамка для неактивных статусов в режиме редактирования
-            border: isEditing && !isActive 
-              ? "0.7px solid rgba(148, 166, 190, 0.4)" 
-              : isEditing && isActive 
-                ? "1px solid #565EEF" 
-                : "none",
-            // Прозрачность для неактивных
-            opacity: isEditing && !isActive ? 0.6 : 1,
-          }}
-        >
-          <p>{st}</p>
-        </div>
-      );
-    })}
-  </div>
+                {["Без статуса", "Нужно сделать", "В работе", "Тестирование", "Готово"].map((st) => {
+                  const isActive = editData.status === st;
+                  
+                  return (
+                    <div 
+                      key={st}
+                      onClick={() => isEditing && setEditData({ ...editData, status: st })}
+                      className={`status__theme ${st === "Нужно сделать" ? "_gray" : ""}`}
+                      style={{
+                        cursor: isEditing ? "pointer" : "default",
+                        display: !isEditing && !isActive ? "none" : "block",
+                        backgroundColor: isEditing 
+                          ? (isActive ? "#565EEF" : "transparent")
+                          : (isActive ? "#94A6BE" : ""),
+                        color: isEditing 
+                          ? (isActive ? "#FFFFFF" : "#94A6BE")
+                          : (isActive ? "#FFFFFF" : ""),
+                        border: isEditing && !isActive 
+                          ? "0.7px solid rgba(148, 166, 190, 0.4)" 
+                          : isEditing && isActive 
+                            ? "1px solid #565EEF" 
+                            : "none",
+                        opacity: isEditing && !isActive ? 0.6 : 1,
+                      }}
+                    >
+                      <p>{st}</p>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
 
             <div className="pop-browse__wrap">
@@ -140,25 +138,22 @@ function PopBrowse() {
                     readOnly={!isEditing}
                     placeholder="Введите описание задачи..."
                     value={editData.description}
-                    // Исправлено: функция обновления стейта использует setEditData вместо несуществующей setFormData
                     onChange={(e) => setEditData({ ...editData, description: e.target.value })}
                   ></textarea>
                 </div>
               </form>
               
-              {/* Исправлено: Календарь теперь полностью контролируемый и обновляет дату в editData */}
               <Calendar
                 selected={editData.date}
                 setSelected={(newDate) => isEditing && setEditData({ ...editData, date: newDate })} 
               />
             </div>
 
-            {/* Добавлено: Вывод текущей даты в правильном формате (как в макете) */}
             <div className="pop-browse__date-output" style={{ padding: "10px 0", color: "#94A6BE", fontSize: "14px" }}>
               <p>Срок исполнения: <span style={{ color: "#000", fontWeight: "500" }}>{formatBrowseDate(editData.date)}</span></p>
             </div>
 
-            {error && <p style={{ color: "red", textAlign: "center", marginBottom: "10px" }}>{error}</p>}
+            {localError && <p style={{ color: "red", textAlign: "center", marginBottom: "10px" }}>{localError}</p>}
 
             {!isEditing ? (
               <div className="pop-browse__btn-browse">
