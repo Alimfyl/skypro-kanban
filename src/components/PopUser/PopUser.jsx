@@ -1,19 +1,18 @@
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../contexts/AuthContext";
 
-function PopUser({ setUser }) {
+function PopUser() {
   const navigate = useNavigate();
+  
+  const { logout } = useAuth();
 
   const handleLogout = (e) => {
     e.preventDefault();
     
-	
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
     
-	
-    setUser(null);
+    logout();
     
-	
+    
     navigate("/login");
   };
 

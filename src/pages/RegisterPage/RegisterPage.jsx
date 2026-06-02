@@ -1,15 +1,34 @@
 import { Link, useNavigate } from "react-router-dom";
-import * as S from "../LoginPage/Login.styled"; // Переиспользуем твои стили
+import { useState } from "react";
+import { useAuth } from "../../contexts/AuthContext";
+import * as S from "../LoginPage/Login.styled"; 
 
-function RegisterPage({ setUser }) {
+function RegisterPage() {
   const navigate = useNavigate();
+  
+  const { register, isLoading, error } = useAuth();
 
-  const handleRegister = (e) => {
+  
+  const [formData, setFormData] = useState({
+    name: "",
+    login: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleRegister = async (e) => {
     e.preventDefault();
-    // Имитируем регистрацию и вход
-    setUser({ name: "Новый пользователь" });
-    // Переходим на главную
-    navigate("/");
+
+    
+    const success = await register(formData.login, formData.password, formData.name);
+    
+    if (success) {
+      navigate("/"); 
+    }
   };
 
   return (
@@ -22,26 +41,34 @@ function RegisterPage({ setUser }) {
           <S.ModalFormLogin onSubmit={handleRegister}>
             <S.ModalInput
               type="text"
-              name="first-name"
-              id="first-name"
+              name="name" 
               placeholder="Имя"
+              value={formData.name}
+              onChange={handleChange}
+              required
             />
             <S.ModalInput
               type="text"
-              name="login"
-              id="loginReg"
-              placeholder="Эл. почта"
+              name="login" 
+              placeholder="Логин или эл. почта"
+              value={formData.login}
+              onChange={handleChange}
+              required
             />
             <S.ModalInput
               type="password"
-              name="password"
-              id="passwordFirst"
+              name="password" 
               placeholder="Пароль"
+              value={formData.password}
+              onChange={handleChange}
+              required
             />
             
-            <S.ModalBtnEnter type="submit" id="SignUpEnter">
-              Зарегистрироваться
+            <S.ModalBtnEnter type="submit" id="SignUpEnter" disabled={isLoading}>
+              {isLoading ? "Регистрация..." : "Зарегистрироваться"}
             </S.ModalBtnEnter>
+
+            {error && <p style={{ color: "red", marginTop: "8px", textAlign: "center" }}>{error}</p>}
 
             <S.ModalFormGroup>
               <p>

@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import { useAuth } from "./contexts/AuthContext";
+
 import MainPage from "./pages/MainPage/MainPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
@@ -8,24 +10,33 @@ import PopBrowse from "./components/PopBrowse/PopBrowse";
 import PopNewCard from "./components/PopNewCard/PopNewCard";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
 
- function AppRoutes({ user, setUser }) {
+function AppRoutes() {
+  const { isAuthenticated, isInitializing } = useAuth();
+
+  
+  
+  if (isInitializing) {
+    return (
+      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', color: '#94A3B8' }}>
+        Загрузка приложения...
+      </div>
+    );
+  }
+
   return (
     <Routes>
-        
-      <Route element={<PrivateRoute isAuth={!!user} />}>
-        <Route path="/" element={<MainPage user={user} />}>
-        
-          <Route path="exit" element={<PopUser setUser={setUser} />} />
+      
+      <Route element={<PrivateRoute isAuth={isAuthenticated} />}>
+      
+        <Route path="/" element={<MainPage />}>
+          <Route path="exit" element={<PopUser />} />
           <Route path="new-card" element={<PopNewCard />} />
           <Route path="card/:id" element={<PopBrowse />} />
         </Route>
       </Route>
 
-
-      <Route path="/login" element={<LoginPage setUser={setUser} />} />
-      <Route path="/register" element={<RegisterPage setUser={setUser} />} />
-      
-      
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/register" element={<RegisterPage />} />
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

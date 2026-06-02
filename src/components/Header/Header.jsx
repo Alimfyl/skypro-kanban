@@ -1,16 +1,21 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import * as S from "./Header.styled"
+
+import { useAuth } from "../../contexts/AuthContext";
+import * as S from "./Header.styled";
 import { Container } from "../../CommonStyles.styled";
-function Header () {
+
+function Header() {
+	
+	const { user } = useAuth();
 	const [isOpen, setIsOpen] = useState(false);
+
 	const toggleMenu = (e) => {
 		e.preventDefault();
 		setIsOpen(!isOpen);
 	};
 
-
-    return(
+    return (
         <S.StyledHeader>
 			<Container>
 				<S.HeaderBlock>
@@ -21,17 +26,29 @@ function Header () {
 						<Link to="/"><img src="/images/logo_dark.png" alt="logo"/></Link>
 					</div>
 					<S.HeaderNav>
-						<S.HeaderBtnMainNew id="btnMainNew"><Link to="/new-card">Создать новую задачу</Link></S.HeaderBtnMainNew>
-						<S.HeaderUser href="#" onClick={toggleMenu}>Ivan Ivanov</S.HeaderUser>
+						<S.HeaderBtnMainNew id="btnMainNew">
+							<Link to="/new-card">Создать новую задачу</Link>
+						</S.HeaderBtnMainNew>
+						
+						
+						<S.HeaderUser href="#" onClick={toggleMenu}>
+							{user?.name || "Пользователь"}
+						</S.HeaderUser>
+
 						<div className="header__pop-user-set pop-user-set" id="user-set-target" style={{ display: isOpen ? "block" : "none"}}>
-							    <a onClick={toggleMenu} style={{cursor: "pointer"}}>x</a> 
-							<p className="pop-user-set__name">Ivan Ivanov</p>
-							<p className="pop-user-set__mail">ivan.ivanov@gmail.com</p>
+							<a onClick={toggleMenu} style={{cursor: "pointer"}}>x</a> 
+							
+							
+							<p className="pop-user-set__name">{user?.name || "Имя не указано"}</p>
+							<p className="pop-user-set__mail">{user?.login || "Email не указан"}</p>
+							
 							<div className="pop-user-set__theme">
 								<p>Темная тема</p>
 								<input type="checkbox" className="checkbox" name="checkbox"/>
 							</div>
-							<button type="button" className="_hover03"><Link to="/exit">Выйти</Link></button>
+							<button type="button" className="_hover03">
+								<Link to="/exit">Выйти</Link>
+							</button>
 						</div>
 					</S.HeaderNav>					
 				</S.HeaderBlock>
@@ -39,4 +56,5 @@ function Header () {
 		</S.StyledHeader>
     );
 }
-export default Header
+
+export default Header;
