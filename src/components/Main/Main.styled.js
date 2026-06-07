@@ -24,5 +24,38 @@ export const MainContent =   styled.div `
      display: block;
   }
 `;
+const spin = keyframes`
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+`;
+
+export const LoaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 60px 0;
+`;
+
+export const Loader = styled.div`
+  width: 40px;
+  height: 40px;
+  border: 4px solid #d4dbe5;
+  border-top: 4px solid #565eef;
+  border-radius: 50%;
+  animation: ${spin} 1s linear infinite;
+`;
+
+export const EmptyTasks = styled.div`
+  width: 100%;
+  text-align: center;
+  padding: 40px;
+  color: #94a6be;
+  font-size: 18px;
+`;
 
  

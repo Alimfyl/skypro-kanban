@@ -1,18 +1,5 @@
 import api from './index'
-//export const login = async ({ login, password }) => {
-//    try {
-//        const respose = await api.post('/user/login', {
-//            login,
-//            password,
-//        });
-//        return respose.data.user;
-//    } catch (err) {
-//        const message = err.response?.data?.error || 'Ошибка при входе';
-//        throw new Error(message)
-//    }
-//};
 
-// src/api/auth.js
 
 const baseHost = "https://wedev-api.sky.pro/api";
 

@@ -16,7 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    // Вместо запроса к серверу берем сохраненного пользователя из прошлой домашки
+    
     const savedUser = localStorage.getItem("user");
     if (savedUser) {
       try {
@@ -26,7 +26,7 @@ export const AuthProvider = ({ children }) => {
         localStorage.removeItem("token");
       }
     }
-    setIsInitializing(false); // Инициализация мгновенно завершена
+    setIsInitializing(false);
   }, []);
 
   const login = async (loginName, password) => {
@@ -35,7 +35,7 @@ export const AuthProvider = ({ children }) => {
     try {
       const userData = await loginApi({ login: loginName, password });
       
-      // Сохраняем и токен, и данные пользователя для синхронизации
+      
       localStorage.setItem("token", userData.token || "mock-token");
       localStorage.setItem("user", JSON.stringify(userData));
       
