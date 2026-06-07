@@ -21,15 +21,11 @@ function RegisterPage() {
   };
 
   const handleRegister = async (e) => {
-    e.preventDefault();
-
-    
-    const success = await register(formData.login, formData.password, formData.name);
-    
-    if (success) {
-      navigate("/"); 
-    }
-  };
+  e.preventDefault();
+  if (!formData.name.trim() || !formData.login.trim() || !formData.password.trim()) return;
+  const success = await register(formData.login, formData.password, formData.name);
+  if (success) navigate("/");
+};
 
   return (
     <S.Wrapper>
