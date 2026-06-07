@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }) => {
     if (savedUser) {
       try {
         setUser(JSON.parse(savedUser));
-      } catch (err) {
+      } catch {
         localStorage.removeItem("user");
         localStorage.removeItem("token");
       }

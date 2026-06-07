@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { data, Outlet } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import { fetchTasks } from "../../api/tasks";
 import Header from "../../components/Header/Header";
 import Main from "../../components/Main/Main";
