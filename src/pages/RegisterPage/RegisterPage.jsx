@@ -22,8 +22,16 @@ function RegisterPage() {
 
   const handleRegister = async (e) => {
   e.preventDefault();
-  if (!formData.name.trim() || !formData.login.trim() || !formData.password.trim()) return;
-  const success = await register(formData.login, formData.password, formData.name);
+  if (!formData.name.trim() ||
+    !formData.login.trim() ||
+    !formData.password.trim()) {
+  return alert("Заполните все поля");
+}
+  const success = await register(
+  formData.login.trim(),
+  formData.password.trim(),
+  formData.name.trim()
+);
   if (success) navigate("/");
 };
 

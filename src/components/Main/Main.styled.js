@@ -1,4 +1,32 @@
-import styled from 'styled-components';
+import styled, { keyframes } from "styled-components";
+
+const spin = keyframes`
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+`;
+
+export const LoaderWrapper = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+`;
+
+export const Loader = styled.div`
+  border: 5px solid #f3f3f3;
+  border-top: 5px solid #565EEF;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: ${spin} 1s linear infinite;
+`;
+
+export const EmptyTasks = styled.div`
+  color: #94A3B8;
+  text-align: center;
+  padding: 40px 0;
+  font-size: 16px;
+`;
 
 export const Main =  styled.main `
   width: 100%;
@@ -24,38 +52,3 @@ export const MainContent =   styled.div `
      display: block;
   }
 `;
-const spin = keyframes`
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-`;
-
-export const LoaderWrapper = styled.div`
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  padding: 60px 0;
-`;
-
-export const Loader = styled.div`
-  width: 40px;
-  height: 40px;
-  border: 4px solid #d4dbe5;
-  border-top: 4px solid #565eef;
-  border-radius: 50%;
-  animation: ${spin} 1s linear infinite;
-`;
-
-export const EmptyTasks = styled.div`
-  width: 100%;
-  text-align: center;
-  padding: 40px;
-  color: #94a6be;
-  font-size: 18px;
-`;
-
- 
