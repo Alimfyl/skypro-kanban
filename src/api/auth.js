@@ -22,15 +22,20 @@ export const login = async ({ login, password }) => {
 
 
 export const register = async ({ login, name, password }) => {
-    try{
-    const response = await api.post('/user', {
-    login,
-    name,
-    password,
-});
-return response.data.user;
-} catch (err) {
-    const message = err.response?.data?.error || 'Ошибка при регистрации';
-    throw new Error(message);
-}
+  const response = await fetch(`${baseHost}/user`, {
+    method: "POST",
+    body: JSON.stringify({
+      login,
+      name,
+      password,
+    }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.error || "Ошибка регистрации");
+  }
+
+  return data.user;
 };
