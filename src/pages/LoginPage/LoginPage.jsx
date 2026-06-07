@@ -19,15 +19,11 @@ function LoginPage() {
   };
 
   const handleLogin = async (e) => {
-    e.preventDefault();
-
-    
-    const success = await login(formData.login, formData.password); 
-    
-    if (success) {
-      navigate("/");
-    }
-  };
+  e.preventDefault();
+  if (!formData.login.trim() || !formData.password.trim()) return;
+  const success = await login(formData.login, formData.password);
+  if (success) navigate("/");
+};
 
   return (
     <S.Wrapper>
