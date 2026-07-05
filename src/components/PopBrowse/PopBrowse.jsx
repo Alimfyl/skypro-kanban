@@ -7,17 +7,17 @@ import Calendar from "../Calendar/Calendar";
 function PopBrowse() {
   const { id } = useParams();
   const navigate = useNavigate();
-  
-  
+
   const { tasks, editTask, removeTask } = useTasks();
 
-  
-  const currentCard = tasks.find((card) => card._id === id || card.id === id);
+  const currentCard = tasks.find(
+    (card) => card._id === id || card.id === id
+  );
 
-  const [isEditing, setIsEditing] = useState(false); 
+  const [isEditing, setIsEditing] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [localError, setLocalError] = useState(null);
-  
+
   const [editData, setEditData] = useState({
     title: "",
     topic: "",
@@ -33,7 +33,9 @@ function PopBrowse() {
         topic: currentCard.topic,
         status: currentCard.status,
         description: currentCard.description || currentCard.text || "",
-        date: currentCard.date ? new Date(currentCard.date) : new Date(),
+        date: currentCard.date
+          ? new Date(currentCard.date)
+          : new Date(),
       });
     }
   }, [currentCard]);
@@ -42,8 +44,8 @@ function PopBrowse() {
 
   const formatBrowseDate = (dateVal) => {
     if (!dateVal) return "";
-    const dateObj = new Date(dateVal);
-    return dateObj.toLocaleDateString("ru-RU", {
+
+    return new Date(dateVal).toLocaleDateString("ru-RU", {
       day: "2-digit",
       month: "2-digit",
       year: "2-digit",
@@ -52,12 +54,15 @@ function PopBrowse() {
 
   const handleDelete = async (e) => {
     e.preventDefault();
-    if (!window.confirm("Вы уверены, что хотите удалить задачу?")) return;
+
+    if (!window.confirm("Вы уверены, что хотите удалить задачу?")) {
+      return;
+    }
 
     setIsLoading(true);
     setLocalError(null);
+
     try {
-      
       await removeTask(id);
       navigate("/");
     } catch (err) {
@@ -69,11 +74,25 @@ function PopBrowse() {
 
   const handleSave = async (e) => {
     e.preventDefault();
+
+    if (
+      !editData.title.trim() ||
+      !editData.description.trim()
+    ) {
+      setLocalError("Поля не могут быть пустыми");
+      return;
+    }
+
     setIsLoading(true);
     setLocalError(null);
+
     try {
-      
-      await editTask(id, editData);
+      await editTask(id, {
+        ...editData,
+        title: editData.title.trim(),
+        description: editData.description.trim(),
+      });
+
       setIsEditing(false);
     } catch (err) {
       setLocalError(err.message);
@@ -82,44 +101,122 @@ function PopBrowse() {
     }
   };
 
+  const handleCancel = () => {
+
+    setEditData({
+      title: currentCard.title,
+      topic: currentCard.topic,
+      status: currentCard.status,
+      description:
+        currentCard.description ||
+        currentCard.text ||
+        "",
+      date: currentCard.date
+        ? new Date(currentCard.date)
+        : new Date(),
+    });
+
+    setLocalError(null);
+    setIsEditing(false);
+  };
+
   return (
     <div className="pop-browse" id="popBrowse">
       <div className="pop-browse__container">
         <div className="pop-browse__block">
           <div className="pop-browse__content">
             <div className="pop-browse__top-block">
-              <h3 className="pop-browse__ttl">{editData.title}</h3>
-              <div className={`categories__theme theme-top _active-category ${editData.topic === 'Web Design' ? '_orange' : editData.topic === 'Research' ? '_green' : '_purple'}`}>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={editData.title}
+                  onChange={(e) =>
+                    setEditData({
+                      ...editData,
+                      title: e.target.value,
+                    })
+                  }
+                  className="form-browse__input"
+                />
+              ) : (
+                <h3 className="pop-browse__ttl">
+                  {editData.title}
+                </h3>
+              )}
+
+              <div
+                className={`categories__theme theme-top _active-category ${
+                  editData.topic === "Web Design"
+                    ? "_orange"
+                    : editData.topic === "Research"
+                    ? "_green"
+                    : "_purple"
+                }`}
+              >
                 <p>{editData.topic}</p>
               </div>
             </div>
 
             <div className="pop-browse__status status">
               <p className="status__p subttl">Статус</p>
+
               <div className="status__themes">
-                {["Без статуса", "Нужно сделать", "В работе", "Тестирование", "Готово"].map((st) => {
+                {[
+                  "Без статуса",
+                  "Нужно сделать",
+                  "В работе",
+                  "Тестирование",
+                  "Готово",
+                ].map((st) => {
                   const isActive = editData.status === st;
-                  
+
                   return (
-                    <div 
+                    <div
                       key={st}
-                      onClick={() => isEditing && setEditData({ ...editData, status: st })}
-                      className={`status__theme ${st === "Нужно сделать" ? "_gray" : ""}`}
+                      onClick={() =>
+                        isEditing &&
+                        setEditData({
+                          ...editData,
+                          status: st,
+                        })
+                      }
+                      className={`status__theme ${
+                        st === "Нужно сделать"
+                          ? "_gray"
+                          : ""
+                      }`}
                       style={{
-                        cursor: isEditing ? "pointer" : "default",
-                        display: !isEditing && !isActive ? "none" : "block",
-                        backgroundColor: isEditing 
-                          ? (isActive ? "#565EEF" : "transparent")
-                          : (isActive ? "#94A6BE" : ""),
-                        color: isEditing 
-                          ? (isActive ? "#FFFFFF" : "#94A6BE")
-                          : (isActive ? "#FFFFFF" : ""),
-                        border: isEditing && !isActive 
-                          ? "0.7px solid rgba(148, 166, 190, 0.4)" 
-                          : isEditing && isActive 
-                            ? "1px solid #565EEF" 
+                        cursor: isEditing
+                          ? "pointer"
+                          : "default",
+                        display:
+                          !isEditing && !isActive
+                            ? "none"
+                            : "block",
+                        backgroundColor: isEditing
+                          ? isActive
+                            ? "#565EEF"
+                            : "transparent"
+                          : isActive
+                          ? "#94A6BE"
+                          : "",
+                        color: isEditing
+                          ? isActive
+                            ? "#FFFFFF"
+                            : "#94A6BE"
+                          : isActive
+                          ? "#FFFFFF"
+                          : "",
+                        border:
+                          isEditing && !isActive
+                            ? "0.7px solid rgba(148,166,190,0.4)"
+                            : isEditing && isActive
+                            ? "1px solid #565EEF"
                             : "none",
-                        opacity: isEditing && !isActive ? 0.6 : 1,
+                        opacity:
+                          isEditing && !isActive
+                            ? 0.6
+                            : 1,
                       }}
                     >
                       <p>{st}</p>
@@ -132,57 +229,129 @@ function PopBrowse() {
             <div className="pop-browse__wrap">
               <form className="pop-browse__form form-browse">
                 <div className="form-browse__block">
-                  <label className="subttl">Описание задачи</label>
+                  <label className="subttl">
+                    Описание задачи
+                  </label>
+
                   <textarea
                     className="form-browse__area"
                     readOnly={!isEditing}
                     placeholder="Введите описание задачи..."
                     value={editData.description}
-                    onChange={(e) => setEditData({ ...editData, description: e.target.value })}
-                  ></textarea>
+                    onChange={(e) =>
+                      setEditData({
+                        ...editData,
+                        description: e.target.value,
+                      })
+                    }
+                  />
                 </div>
               </form>
-              
+
               <Calendar
                 selected={editData.date}
-                setSelected={(newDate) => isEditing && setEditData({ ...editData, date: newDate })} 
+                setSelected={(newDate) =>
+                  isEditing &&
+                  setEditData({
+                    ...editData,
+                    date: newDate,
+                  })
+                }
               />
             </div>
 
-            <div className="pop-browse__date-output" style={{ padding: "10px 0", color: "#94A6BE", fontSize: "14px" }}>
-              <p>Срок исполнения: <span style={{ color: "#000", fontWeight: "500" }}>{formatBrowseDate(editData.date)}</span></p>
+            <div
+              className="pop-browse__date-output"
+              style={{
+                padding: "10px 0",
+                color: "#94A6BE",
+                fontSize: "14px",
+              }}
+            >
+              <p>
+                Срок исполнения:{" "}
+                <span
+                  style={{
+                    color: "#000",
+                    fontWeight: "500",
+                  }}
+                >
+                  {formatBrowseDate(editData.date)}
+                </span>
+              </p>
             </div>
 
-            {localError && <p style={{ color: "red", textAlign: "center", marginBottom: "10px" }}>{localError}</p>}
+            {localError && (
+              <p
+                style={{
+                  color: "red",
+                  textAlign: "center",
+                  marginBottom: "10px",
+                }}
+              >
+                {localError}
+              </p>
+            )}
 
             {!isEditing ? (
               <div className="pop-browse__btn-browse">
                 <div className="btn-group">
-                  <button className="btn-browse__edit _btn-bor _hover03" onClick={() => setIsEditing(true)}>
+                  <button
+                    className="btn-browse__edit _btn-bor _hover03"
+                    onClick={() => setIsEditing(true)}
+                  >
                     Редактировать задачу
                   </button>
-                  <button className="btn-browse__delete _btn-bor _hover03" onClick={handleDelete} disabled={isLoading}>
+
+                  <button
+                    className="btn-browse__delete _btn-bor _hover03"
+                    onClick={handleDelete}
+                    disabled={isLoading}
+                  >
                     Удалить задачу
                   </button>
                 </div>
-                <button className="btn-browse__close _btn-bg _hover01" onClick={() => navigate("/")}>
+
+                <button
+                  className="btn-browse__close _btn-bg _hover01"
+                  onClick={() => navigate("/")}
+                >
                   Закрыть
                 </button>
               </div>
             ) : (
               <div className="pop-browse__btn-edit">
                 <div className="btn-group">
-                  <button className="btn-edit__edit _btn-bg _hover01" onClick={handleSave} disabled={isLoading}>
-                    {isLoading ? "Сохранение..." : "Сохранить"}
+                  <button
+                    className="btn-edit__edit _btn-bg _hover01"
+                    onClick={handleSave}
+                    disabled={isLoading}
+                  >
+                    {isLoading
+                      ? "Сохранение..."
+                      : "Сохранить"}
                   </button>
-                  <button className="btn-edit__edit _btn-bor _hover03" onClick={() => setIsEditing(false)}>
+
+                  <button
+                    className="btn-edit__edit _btn-bor _hover03"
+                    onClick={handleCancel}
+                  >
                     Отменить
                   </button>
-                  <button className="btn-edit__delete _btn-bor _hover03" onClick={handleDelete} disabled={isLoading}>
+
+                  <button
+                    className="btn-edit__delete _btn-bor _hover03"
+                    onClick={handleDelete}
+                    disabled={isLoading}
+                  >
                     Удалить задачу
                   </button>
                 </div>
-                <button className="btn-browse__close _btn-bg _hover01" onClick={() => navigate("/")}>
+
+                <button
+                  className="btn-browse__close _btn-bg _hover01"
+                  onClick={() => navigate("/")}
+                >
                   Закрыть
                 </button>
               </div>

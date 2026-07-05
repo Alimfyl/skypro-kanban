@@ -22,20 +22,23 @@ function Main() {
 				<S.MainBlock>
 					<S.MainContent>
                         
-                        {isLoading && tasks.length === 0 ? (
-                            <div style={{ color: "#94A3B8", padding: "20px", textBreak: "normal" }}>
-                                Загрузка ваших задач...
-                            </div>
-                        ) : (
-                            statusList.map((status) => (
-                                <Column 
-                                    key={status}
-                                    title={status}
-                                    
-                                    cardList={tasks.filter((card) => card.status === status)}
-                                />
-                            ))
-                        )}
+                        {isLoading ? (
+                                      <S.LoaderWrapper>
+                                        <S.Loader />
+                                      </S.LoaderWrapper>
+                                    ) : tasks.length === 0 ? (
+                                      <S.EmptyTasks>
+                                        Новых задач нет
+                                      </S.EmptyTasks>
+                                    ) : (
+                                      statusList.map((status) => (
+                                        <Column
+                                          key={status}
+                                          title={status}
+                                          cardList={tasks.filter((card) => card.status === status)}
+                                        />
+                                      ))
+                                    )}
 					</S.MainContent>
 				</S.MainBlock>
 			</Container>

@@ -1,16 +1,161 @@
-# React + Vite
+# SkyPro Kanban
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Веб-приложение для управления задачами в формате Kanban-доски.
 
-Currently, two official plugins are available:
+## Функциональность
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+### Авторизация
 
-## React Compiler
+- Регистрация пользователя
+- Вход в систему
+- Выход из аккаунта
+- Защищенные маршруты для авторизованных пользователей
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+### Работа с задачами
 
-## Expanding the ESLint configuration
+- Получение списка задач с сервера
+- Создание новой задачи
+- Просмотр информации о задаче
+- Редактирование задачи
+- Удаление задачи
+- Изменение статуса задачи
+- Выбор даты выполнения задачи
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+### Обработка ошибок
+
+- Отображение ошибок авторизации
+- Отображение ошибок регистрации
+- Обработка ошибок запросов к серверу
+- Проверка обязательных полей форм
+- Запрет отправки пустых и состоящих из пробелов значений
+
+### Интерфейс
+
+- Адаптивная верстка
+- Индикатор загрузки данных
+- Сообщение «Новых задач нет» при отсутствии задач
+- Страница 404 для несуществующих маршрутов
+
+---
+
+## Технологии
+
+Проект разработан с использованием:
+
+- React
+- Vite
+- React Router DOM
+- Context API
+- Axios
+- Styled Components
+- ESLint
+
+---
+
+## Установка проекта
+
+Клонировать репозиторий:
+
+```bash
+git clone https://github.com/Alimfyl/skypro-kanban.git
+```
+
+Перейти в папку проекта:
+
+```bash
+cd skypro-kanban
+```
+
+Установить зависимости:
+
+```bash
+npm install
+```
+
+Запустить проект:
+
+```bash
+npm run dev
+```
+
+---
+
+## Доступные команды
+
+Запуск проекта:
+
+```bash
+npm run dev
+```
+
+Проверка линтером:
+
+```bash
+npm run lint
+```
+
+Сборка проекта:
+
+```bash
+npm run build
+```
+
+Предпросмотр production-сборки:
+
+```bash
+npm run preview
+```
+
+---
+
+## Структура проекта
+
+```text
+src
+├── api
+├── assets
+├── components
+│   ├── Calendar
+│   ├── Card
+│   ├── Column
+│   ├── Header
+│   ├── Main
+│   ├── PopBrowse
+│   ├── PopNewCard
+│   ├── PopUser
+│   └── PrivateRoute
+├── contexts
+├── pages
+│   ├── LoginPage
+│   ├── MainPage
+│   ├── NotFoundPage
+│   └── RegisterPage
+├── App.jsx
+├── AppRoutes.jsx
+└── main.jsx
+```
+
+---
+
+## API
+
+Для работы приложения используется учебное API:
+
+```text
+https://wedev-api.sky.pro/api
+```
+
+Используемые операции:
+
+- регистрация пользователя;
+- авторизация пользователя;
+- получение списка задач;
+- создание задачи;
+- изменение задачи;
+- удаление задачи.
+
+---
+
+## Автор
+
+Альмир

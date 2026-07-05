@@ -1,42 +1,58 @@
-import { useState, useEffect } from "react";
+import { useState, useMemo } from "react";
 
 function Calendar({ selected, setSelected }) {
   const [currentMonth, setCurrentMonth] = useState(new Date());
-  const [days, setDays] = useState([]);
 
-  // Форматирование даты для отображения
- const formatDate = (date) => {
-  if (!date) return "";
-  const day = date.getDate().toString().padStart(2, "0");
-  const month = (date.getMonth() + 1).toString().padStart(2, "0");
-  const year = date.getFullYear().toString().slice(-2);
-  return `${day}.${month}.${year}`;
-};
+  // Форматирование даты
+  const formatDate = (date) => {
+    if (!date) return "";
 
-  // Генерация сетки календаря
-  const generateCalendar = (date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth();
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1)
+      .toString()
+      .padStart(2, "0");
+    const year = date.getFullYear().toString().slice(-2);
+
+    return `${day}.${month}.${year}`;
+  };
+
+  // Генерация календаря
+  const days = useMemo(() => {
+    const year = currentMonth.getFullYear();
+    const month = currentMonth.getMonth();
 
     const firstDayOfMonth = new Date(year, month, 1);
-    const startDay = firstDayOfMonth.getDay(); 
+    const startDay = firstDayOfMonth.getDay();
     const startOffset = startDay === 0 ? 6 : startDay - 1;
 
-    const daysInMonth = new Date(year, month + 1, 0).getDate();
-    const daysInPrevMonth = new Date(year, month, 0).getDate();
+    const daysInMonth = new Date(
+      year,
+      month + 1,
+      0
+    ).getDate();
+
+    const daysInPrevMonth = new Date(
+      year,
+      month,
+      0
+    ).getDate();
 
     const daysArray = [];
 
-    // Дни предыдущего месяца
+    // Предыдущий месяц
     for (let i = startOffset - 1; i >= 0; i--) {
       daysArray.push({
-        date: new Date(year, month - 1, daysInPrevMonth - i),
+        date: new Date(
+          year,
+          month - 1,
+          daysInPrevMonth - i
+        ),
         isCurrentMonth: false,
         dayNumber: daysInPrevMonth - i,
       });
     }
 
-    // Дни текущего месяца
+    // Текущий месяц
     for (let i = 1; i <= daysInMonth; i++) {
       daysArray.push({
         date: new Date(year, month, i),
@@ -45,8 +61,9 @@ function Calendar({ selected, setSelected }) {
       });
     }
 
-    // Дни следующего месяца
+    // Следующий месяц
     const remaining = 42 - daysArray.length;
+
     for (let i = 1; i <= remaining; i++) {
       daysArray.push({
         date: new Date(year, month + 1, i),
@@ -55,10 +72,9 @@ function Calendar({ selected, setSelected }) {
       });
     }
 
-    setDays(daysArray);
-  };
+    return daysArray;
+  }, [currentMonth]);
 
-  // Переключение месяца
   const changeMonth = (direction) => {
     setCurrentMonth((prev) => {
       const newDate = new Date(prev);
@@ -67,26 +83,22 @@ function Calendar({ selected, setSelected }) {
     });
   };
 
-  // При смене месяца или выбранной даты обновляем сетку
-  useEffect(() => {
-    generateCalendar(currentMonth);
-  }, [currentMonth]);
+  const monthName = currentMonth.toLocaleString(
+    "ru-RU",
+    {
+      month: "long",
+      year: "numeric",
+    }
+  );
 
-  // Название месяца на русском
-  const monthName = currentMonth.toLocaleString("ru-RU", {
-    month: "long",
-    year: "numeric",
-  });
-
-  // Проверка, является ли день выходным (суббота 6, воскресенье 0)
   const isWeekend = (date) => {
     const day = date.getDay();
     return day === 0 || day === 6;
   };
 
-  // Проверка, выбран ли день
   const isSelected = (date) => {
     if (!selected) return false;
+
     return (
       date.getDate() === selected.getDate() &&
       date.getMonth() === selected.getMonth() &&
@@ -94,7 +106,6 @@ function Calendar({ selected, setSelected }) {
     );
   };
 
-  // Обработчик клика по дню
   const handleDayClick = (day) => {
     setSelected(day.date);
   };
